@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # dongqiudi
 
 > football news app
@@ -19,3 +20,7 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# Dongqiudi
+Football news web app copy Dongqiudi
+>>>>>>> dcc8fea734a0d8f2f42fcdd140bdbb48230417ac
