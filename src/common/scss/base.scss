@@ -1,0 +1,10 @@
+@import "variable";
+body,
+html {
+  line-height: 1; // 容器高度和font-size相等
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
+  user-select: none; //文本不能被选择
+  -webkit-tap-highlight-color: transparent;
+  background: $color-background;
+  color: $color-text;
+}
