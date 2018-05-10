@@ -139,6 +139,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     .slider-item {
+      position: relative;
       float: left;
       box-sizing: border-box;
       overflow: hidden;
@@ -159,14 +160,14 @@ export default {
     position: absolute;
     right: 0;
     left: 0;
-    bottom: 12px;
-    text-align: center;
+    bottom: 4px;
+    text-align: right;
     font-size: 0;
     .dot {
       display: inline-block;
       margin: 0 4px;
-      width: 8px;
-      height: 8px;
+      width: 4px;
+      height: 4px;
       border-radius: 50%;
       background: #fff;
       &.active {

@@ -128,13 +128,29 @@ export default {
   top: 40px;
   bottom: 0;
   .news-content {
-    padding-top: 4px;
+    padding-top: 1px;
     height: 100%;
     overflow: hidden;
-    .title {
+    .slider-wrapper {
+      .title {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 0px;
+      line-height: 16px;
       color: #fff;
-      font-size: $font-size-small;
-      text-align: center;
+      background: rgba($color: #000000, $alpha: 0.3);
+      text-align: left;
+      font-size: $font-size-medium-x;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      }
+      .title:after {
+        content: '';
+        display: block;
+        height: 14px;
+      }
     }
     .news-list {
       .item {
