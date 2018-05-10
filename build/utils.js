@@ -102,24 +102,29 @@ exports.newsCrawler = function (html) {
   var $ = cheerio.load(html)
   var ret = {}
   ret.data = {}
-  ret.data.news = []
-  var list = $('.con').find('p')
-  if (list.children.length) {
+  // ret.data.news = []
+  // 有些段落可能含有其他标签
+  // var list = $('.con').find('p')
+  // if (list.children.length) {
+  //   ret.code = 0
+  // }
+  // list.each(function () {
+  //   var _obj = {}
+  //   if ($(this).find('img').length) {
+  //     _obj.tag = 'img'
+  //     _obj.src = $(this).find('img').attr('data-src')
+  //     _obj.originSrc = $(this).find('img').attr('orig-src')
+  //   } else {
+  //     _obj.tag = 'p'
+  //     _obj.content = $(this).html()
+  //   }
+  //   ret.data.news.push(_obj)
+  // })
+  var result = $('.show-more')
+  if (result.children.length) {
     ret.code = 0
   }
-  list.each(function () {
-    var _obj = {}
-    if ($(this).find('img').length) {
-      _obj.tag = 'img'
-      _obj.src = $(this).find('img').attr('data-src')
-      _obj.originSrc = $(this).find('img').attr('orig-src')
-    } else {
-      _obj.tag = 'p'
-      _obj.content = $(this).html()
-    }
-    ret.data.news.push(_obj)
-  })
-
+  ret.data = result.html()
   return ret
 }
 // End

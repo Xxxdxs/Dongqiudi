@@ -4,6 +4,7 @@ import News from 'components/news/news'
 import Match from 'components/match/match'
 import Video from 'components/video/video'
 import Data from 'components/data/data'
+import Article from 'components/article/article'
 
 Vue.use(Router)
 
@@ -16,7 +17,13 @@ export default new Router({
     },
     {
       path: '/news', // 忘记添加News
-      component: News
+      component: News,
+      children: [
+        {
+          path: ':id',
+          component: Article
+        }
+      ]
     },
     {
       path: '/match',

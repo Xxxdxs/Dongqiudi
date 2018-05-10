@@ -14,8 +14,7 @@
         </div>
         <div class="news-list">
           <ul>
-            <li v-for="item in newsList" :key="item.id" class="item">
-              <a :href="getLink(item.id)">
+            <li @click="selectItem(item)" v-for="item in newsList" :key="item.id" class="item">
                 <div class="icon">
                   <img width="90" height="67.5" v-lazy="{src: item.litpic}" alt="">
                 </div>
@@ -23,7 +22,6 @@
                   <h2 class="title">{{ item.title }}</h2>
                   <p class="desc">{{ item.description }}</p>
                 </div>
-              </a>
             </li>
             <loading v-show="hasMore && newsList.length" title="正在加载..."></loading>
           </ul>
@@ -33,6 +31,7 @@
         <loading></loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -41,6 +40,7 @@ import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import Slider from 'base/slider/slider'
 import { getNewsList, getSliderList, getNews } from 'api/news'
+import { ERR_OK } from 'api/config'
 
 const MAX_PERPAGE_LENGTH = 15
 const URL = `http://www.dongqiudi.com/share/article/`
@@ -67,27 +67,9 @@ export default {
         this.$refs.scroll.refresh()
       }
     },
-    _getSliderList() {
-      getSliderList().then((res) => {
-        if (res.code === 0) {
-          this.slider = res.data.slider
-        }
-      })
-    },
-    _getNewsList() {
-      getNewsList(this.page).then((res) => {
-        if (res.list.articles) {
-          this.newsList = res.list.articles
-        }
-      })
-    },
-    _getNews() {
-      getNews().then((res) => {
-        if (res.code === 0) {
-          console.log(res.data.news)
-        } else {
-          console.log('no data')
-        }
+    selectItem(item) {
+      this.$router.push({
+        path: `/news/${item.id}`
       })
     },
     searchMore() {
@@ -104,6 +86,29 @@ export default {
     },
     getLink(id) {
       return URL + `${id}?id=${id}&type=undefined&refer=m_website`
+    },
+    _getSliderList() {
+      getSliderList().then((res) => {
+        if (res.code === ERR_OK) {
+          this.slider = res.data.slider
+        }
+      })
+    },
+    _getNewsList() {
+      getNewsList(this.page).then((res) => {
+        if (res.list.articles) {
+          this.newsList = res.list.articles
+        }
+      })
+    },
+    _getNews() {
+      getNews().then((res) => {
+        if (res.code === ERR_OK) {
+          console.log(res.data)
+        } else {
+          console.log('no data')
+        }
+      })
     },
     _checkMore(length) {
       if (length < MAX_PERPAGE_LENGTH) {

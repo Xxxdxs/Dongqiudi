@@ -51,7 +51,7 @@ apiRoutes.get('/getSliders', function (req, res) {
 
 // 爬取获取新闻信息
 
-const newsUrl = 'https://m.dongqiudi.com/article/645619.html'
+const newsUrl = 'https://m.dongqiudi.com/article/649971.html'
 const { newsCrawler } = require('./utils')
 
 apiRoutes.get('/getNews', function (req, res) {
