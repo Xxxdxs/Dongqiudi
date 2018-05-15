@@ -10,9 +10,6 @@
       <router-link tag="div" class="tab-item" to="/match">
         <span class="tab-link">比赛</span>
       </router-link>
-      <router-link tag="div" class="tab-item" to="/video">
-        <span class="tab-link">视频</span>
-      </router-link>
       <router-link tag="div" class="tab-item" to="/data">
         <span class="tab-link">数据</span>
       </router-link>
@@ -36,7 +33,7 @@
   .logo-container {
     position: relative;
     .logo {
-      position: relative;
+      position: absolute;
       width: 61px;
       left: 15px;
       top: 30%;
@@ -45,7 +42,7 @@
   .tab {
     display: flex;
     height: 30px;
-    width: 70%;
+    width: 50%;
     .tab-item {
       position: relative;
       flex: 1;

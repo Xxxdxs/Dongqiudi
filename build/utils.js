@@ -3,6 +3,7 @@ const path = require('path')
 const config = require('../config')
 const cheerio = require('cheerio')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const puppeteer = require('puppeteer-cn')
 
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -90,6 +91,7 @@ exports.slidersCrawler = function (html) {
     _obj.linkUrl = anchor.attr('href')
     _obj.picUrl = anchor.find('img').attr('src')
     _obj.title = anchor.find('h3').text()
+    _obj.id = _obj.linkUrl.match(/\/(\d*)\.html/)[1]
     ret.data.slider.push(_obj)
   })
 
@@ -98,33 +100,47 @@ exports.slidersCrawler = function (html) {
 // End
 
 // 新闻爬虫 
+// 直接用cheerio爬取不了SSR渲染出来的一些东西 所以改用puppeteer....
+// exports.newsCrawler = function (html) {
+//   var $ = cheerio.load(html)
+//   var ret = {}
+//   ret.data = {}
+//   $('.show-more').find('.show-more-btn').remove()
+//   var result = $('.show-more')
+//   if (result.children.length) {
+//     ret.code = 0
+//   }
+//   ret.data = result.html()
+//   return ret
+// }
+
 exports.newsCrawler = function (html) {
-  var $ = cheerio.load(html)
-  var ret = {}
-  ret.data = {}
-  // ret.data.news = []
-  // 有些段落可能含有其他标签
-  // var list = $('.con').find('p')
-  // if (list.children.length) {
-  //   ret.code = 0
-  // }
-  // list.each(function () {
-  //   var _obj = {}
-  //   if ($(this).find('img').length) {
-  //     _obj.tag = 'img'
-  //     _obj.src = $(this).find('img').attr('data-src')
-  //     _obj.originSrc = $(this).find('img').attr('orig-src')
-  //   } else {
-  //     _obj.tag = 'p'
-  //     _obj.content = $(this).html()
-  //   }
-  //   ret.data.news.push(_obj)
-  // })
-  var result = $('.show-more')
-  if (result.children.length) {
+  return puppeteer.launch().then(async browser => {
+    const page = await browser.newPage()
+    await page.emulate({
+      'userAgent': 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Mobile Safari/537.36',
+      'viewport': {
+        'width': 1920,
+        'height': 1000000
+      }
+    })
+    const ret = {}
+    await page.goto(html)
+    await page.waitForSelector('h1')
     ret.code = 0
-  }
-  ret.data = result.html()
-  return ret
+    ret.data = await page.evaluate(async() => {
+      const wait = (ms) => new Promise(resolve => setTimeout(() => resolve(), ms))
+      const body = document.querySelector('body')
+      for (let i = 0; i < body.clientHeight; i+= 1080) {
+        window.scrollTo(0, i)
+        await wait(100)
+      }
+      await wait(100)
+      const anchor = document.querySelector('.show-more')
+      return anchor.innerHTML
+    })
+    browser.close()
+    return ret
+  })
 }
 // End

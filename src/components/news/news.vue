@@ -5,7 +5,7 @@
         <div v-if="slider.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
             <div v-for="(item,index) in slider" :key="index">
-              <a :href="item.linkUrl">
+              <a @click="selectItem(item)">
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
                 <h3 class="title">{{ item.title }}</h3>
               </a>
@@ -14,7 +14,7 @@
         </div>
         <div class="news-list">
           <ul>
-            <li @click="selectItem(item)" v-for="item in newsList" :key="item.id" class="item">
+            <li @click="selectItem(item)" v-for="item in newsList" v-if="!item.is_video" :key="item.id" class="item">
                 <div class="icon">
                   <img width="90" height="67.5" v-lazy="{src: item.litpic}" alt="">
                 </div>
@@ -39,11 +39,11 @@
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import Slider from 'base/slider/slider'
-import { getNewsList, getSliderList, getNews } from 'api/news'
+import { getNewsList, getSliderList } from 'api/news'
 import { ERR_OK } from 'api/config'
+import bus from 'bus/bus'
 
 const MAX_PERPAGE_LENGTH = 15
-const URL = `http://www.dongqiudi.com/share/article/`
 
 export default {
   data() {
@@ -58,7 +58,6 @@ export default {
   created() {
     this._getNewsList()
     this._getSliderList()
-    this._getNews()
   },
   methods: {
     loadImage() {
@@ -68,6 +67,7 @@ export default {
       }
     },
     selectItem(item) {
+      bus.$emit('selectItem', item.id)
       this.$router.push({
         path: `/news/${item.id}`
       })
@@ -84,9 +84,6 @@ export default {
         }
       })
     },
-    getLink(id) {
-      return URL + `${id}?id=${id}&type=undefined&refer=m_website`
-    },
     _getSliderList() {
       getSliderList().then((res) => {
         if (res.code === ERR_OK) {
@@ -98,15 +95,6 @@ export default {
       getNewsList(this.page).then((res) => {
         if (res.list.articles) {
           this.newsList = res.list.articles
-        }
-      })
-    },
-    _getNews() {
-      getNews().then((res) => {
-        if (res.code === ERR_OK) {
-          console.log(res.data)
-        } else {
-          console.log('no data')
         }
       })
     },

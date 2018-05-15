@@ -25,13 +25,12 @@ const app = express()
 
 
 // 爬取获取轮播图信息
-
-const url = 'http://www.dongqiudi.com'
 const axios = require('axios')
 const { slidersCrawler } = require('./utils')
 const apiRoutes = express.Router()
 
 apiRoutes.get('/getSliders', function (req, res) {
+  const url = 'http://www.dongqiudi.com'
   axios.get(url, {
     headers: {
       referer: 'https://www.dongqiudi.com',
@@ -45,27 +44,54 @@ apiRoutes.get('/getSliders', function (req, res) {
   })
 })
 
-
-
 // 结束
 
 // 爬取获取新闻信息
-
-const newsUrl = 'https://m.dongqiudi.com/article/649971.html'
 const { newsCrawler } = require('./utils')
 
-apiRoutes.get('/getNews', function (req, res) {
-  axios.get(newsUrl, {
-    params: req.query
-  }).then((response) => {
-    res.json(newsCrawler(response.data))
+apiRoutes.get('/getArticle', function (req, res) {
+  const newsUrl = 'https://m.dongqiudi.com/article/'
+  newsCrawler(newsUrl + req.query.id).then((response) => {
+    res.json(response)
   }).catch((e) => {
     console.log(e)
   })
 })
 
+// 结束
 
+// 获取球队和个人数据 后端代理
+apiRoutes.get('/getTeamData', function(req, res) {
+  const url = 'https://api.dongqiudi.com/data/v1/team_ranking/0?'
+  axios.get(url, {
+    headers: {
+      referer: 'https://m.dongqiudi.com/stat',
+      host: 'api.dongqiudi.com',
+      origin: 'https://m.dongqiudi.com'
+    },
+    params: req.query
+  }).then(response => {
+    res.json(response.data)
+  }).catch(e => {
+    console.log(e)
+  })
+})
 
+apiRoutes.get('/getPersonData', function(req, res) {
+  const url = 'https://api.dongqiudi.com/data/v1/person_ranking/0?'
+  axios.get(url, {
+    headers: {
+      referer: 'https://m.dongqiudi.com/stat',
+      host: 'api.dongqiudi.com',
+      origin: 'https://m.dongqiudi.com'
+    },
+    params: req.query
+  }).then(response => {
+    res.json(response.data)
+  }).catch(e => {
+    console.log(e)
+  })
+})
 // 结束
 app.use('/api', apiRoutes)
 
