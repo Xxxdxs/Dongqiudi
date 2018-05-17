@@ -1,12 +1,12 @@
 <template>
   <div class="news">
-    <scroll :data="newsList" class="news-content" ref="scroll" :pullup="pullup" @scrollOverEnd="searchMore" :listenScroll="true">
+    <scroll :data="newsList" class="news-content" ref="scroll" :click="true" :pullup="pullup" @scrollOverEnd="searchMore" :listenScroll="true">
       <div>
         <div v-if="slider.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
             <div v-for="(item,index) in slider" :key="index">
               <a @click="selectItem(item)">
-                <img class="needsclick" @load="loadImage" :src="item.picUrl">
+                <img @load="loadImage" :src="item.picUrl">
                 <h3 class="title">{{ item.title }}</h3>
               </a>
             </div>

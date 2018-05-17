@@ -27,8 +27,9 @@
 .header {
   display: flex;
   justify-content: space-between;
-  position: relative;
+  position: fixed;
   height: 40px;
+  width: 100%;
   background: $color-theme;
   .logo-container {
     position: relative;

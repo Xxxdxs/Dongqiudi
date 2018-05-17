@@ -21,6 +21,8 @@ export function getArticle(id) {
 
   return axios.get(url).then((res) => {
     return Promise.resolve(res.data)
+  }).catch(err => {
+    alert(err)
   })
 }
 
@@ -28,7 +30,6 @@ export function preloadImg(str) {
   let loadedImg = 0
   let imgs = []
   let arr = str.match(/\ssrc=".*?"/g)
-
   return new Promise((resolve, reject) => {
     for (let i = 0; i < arr.length; i++) {
       imgs[i] = new Image()

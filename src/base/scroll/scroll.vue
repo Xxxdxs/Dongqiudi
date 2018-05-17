@@ -17,6 +17,10 @@ export default {
       type: Boolean,
       default: false
     },
+    tap: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Array,
       default: null
@@ -59,6 +63,7 @@ export default {
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
         click: this.click,
+        tap: this.tap,
         scrollX: this.scrollX,
         scrollY: this.scrollY
       })

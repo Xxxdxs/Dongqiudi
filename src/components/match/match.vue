@@ -34,7 +34,8 @@ export default {
       })
     },
     _normalizeDate(date) {
-      return date.toLocaleDateString().replace(/\//g, '-')
+      // return date.toLocaleDateString().replace(/\//g, '-') QQ UC浏览器获取了英文的日期
+      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
     },
     _getMatchList() {
       getMatchList(this.nextDate, this.scrollTimes).then((res) => {

@@ -1,10 +1,10 @@
 <template>
   <div class="data">
-    <scroll ref="scroll" class="league" :data="leagues" :scrollX="true" :scrollY="false">
+    <scroll ref="scroll" class="league" :data="leagues" :scrollX="true" :click="true" :scrollY="false">
       <ul ref="wrapper">
         <li v-for="(item, index) in leagues" 
             :key="item.id" 
-            v-text="item.name" 
+            v-text="item.name"
             class="list-item" 
             :class="{'active': activeIndex === index}"
             @click="selectLeague(item.id, index)"></li>
@@ -72,7 +72,9 @@ export default {
       } else {
         this._getPersonRanking(this.leagueID)
       }
-      this.$refs.scroll.scrollTo(this.activeIndex * -LEAGUE_ITEM_WIDTH)
+      // this.$nextTick(() => {
+      //   this.$refs.scroll.scrollTo(this.activeIndex * -LEAGUE_ITEM_WIDTH)
+      // }) // 此项会导致安卓手机无法点击或者双击才会响应点击
     },
     _getTeamPointRanking(leagueID) {
       getTeamPointRanking(leagueID).then(res => {

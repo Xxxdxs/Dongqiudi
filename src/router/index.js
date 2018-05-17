@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import News from 'components/news/news'
 import Match from 'components/match/match'
-import Video from 'components/video/video'
 import Data from 'components/data/data'
 import Article from 'components/article/article'
 
@@ -13,10 +12,10 @@ export default new Router({
     {
       path: '/',
       redirect: '/news',
-      component: News // component写成了components
+      component: News
     },
     {
-      path: '/news', // 忘记添加News
+      path: '/news',
       component: News,
       children: [
         {
@@ -28,10 +27,6 @@ export default new Router({
     {
       path: '/match',
       component: Match
-    },
-    {
-      path: '/video',
-      component: Video
     },
     {
       path: '/data',
